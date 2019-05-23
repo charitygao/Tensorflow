@@ -22,28 +22,28 @@ plt.show()
 
 #创建模型
 #占位符
-X = tf.placeholder("float")
-Y = tf.placeholder("float")
+X = tf.compat.v1.placeholder("float")
+Y = tf.compat.v1.placeholder("float")
 #模型参数
-W = tf.Variable(tf.random_normal([1]),name = "weight")
-b = tf.Variable(tf.zeros([0]),name = "bias")
+W = tf.Variable(tf.random.normal([1]), name="weight")
+b = tf.Variable(tf.zeros([1]), name="bias")
 
 #前向结构
-z = tf.multiply(X,W) + b
+z = tf.multiply(X, W)+ b
 
 #反向优化
 cost = tf.reduce_mean(tf.square(Y-z))
 learning_rate = 0.01
-optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost) #Cradient descent 梯度下降
+optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate).minimize(cost) #Cradient descent 梯度下降
 
 #初始化变量
-init = tf.global_variables_initializer()
+init = tf.compat.v1.global_variables_initializer()
 #训练参数
 training_epochs = 20
 display_step = 2
 
 #启动session
-with tf.Session() as sess:
+with tf.compat.v1.Session() as sess:
     sess.run(init)
     
     #Fit all training data 向模型输入数据
