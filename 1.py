@@ -11,6 +11,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 plotdata = {"batchsize":[],"loss":[]} #存放批次值和损失值
+def moving_average(a,w=10):
+    if len(a) < w:
+        return a[:]
+    return [val if idx < w else sum(a[(idx-w):idx])/w for idx,val in enumerate(a)]
+
 
 #生成模拟数据
 train_X = np.linspace(-1,1,100)
@@ -61,7 +66,25 @@ with tf.compat.v1.Session() as sess:#sess.run() 网络节点的运算
     print ("Finish!")
     print ("cost=",sess.run(cost,feed_dict={X:train_X,Y:train_Y}),"W=",sess.run(W),"b=",sess.run(b))
     #print ("cost:",cost.eval({X:train_X,Y:train_Y}))
-
+    
+    #图形显示
+    plt.plot(train_X,train_Y,'ro',label='Original data')
+    plt.plot(train_X,sess.run(W)*train_X+sess.run(b),label='Fitted line')
+    plt.legend()
+    plt.show()
+    
+    plotdata["avgloss"] = moving_average(plotdata['loss'])
+    plt.figure(1)
+    plt.subplot(211)
+    plt.plot(plotdata["batchsize"],plotdata["avgloss"],'b--')
+    plt.xlabel('Minibatch number')
+    plt.ylabel('Loss')
+    plt.title('Minibatch run vs. Training loss')
+    
+    plt.show()
+    
+    print ("x=0.2 , z=",sess.run(z,feed_dict={X:0.2}))
+    
 
 
 
