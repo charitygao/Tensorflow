@@ -39,17 +39,17 @@ optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate).minimize(
 #初始化变量
 init = tf.compat.v1.global_variables_initializer()
 #训练参数
-training_epochs = 20
+training_epochs = 20 #迭代的次数
 display_step = 2
 
 #启动session
-with tf.compat.v1.Session() as sess:
+with tf.compat.v1.Session() as sess:#sess.run() 网络节点的运算
     sess.run(init)
     
     #Fit all training data 向模型输入数据
     for epoch in range(training_epochs):
         for (x,y) in zip(train_X,train_Y):
-            sess.run(optimizer,feed_dict={X:x,Y:y})
+            sess.run(optimizer,feed_dict={X:x,Y:y}) #feed机制将真实的数据灌输到占位符上
         
         #显示训练的详细信息
         if epoch % display_step == 0:
